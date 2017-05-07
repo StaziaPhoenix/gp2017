@@ -15,8 +15,13 @@ byte motorOn  = 0;
 byte servoOn  = 0; 
 byte lineWidth;
 byte _speed   = 0;
+<<<<<<< HEAD
 byte minSpeed = 26;
 byte maxSpeed = 51;
+=======
+byte maxSpeed = 35;
+byte minSpeed = 24;
+>>>>>>> better
 
 Servo servo;
 byte angle  = CENTER;
@@ -29,8 +34,8 @@ byte ack    = 0;
 
 // Linescanner
 const unsigned int expose = 7390;
-Linescanner camHigh (CLKHigh, syncHigh, dataHigh, expose);
-Linescanner camLow  (CLKLow, syncLow, dataLow, expose);
+Linescanner camLow (CLKHigh, syncHigh, dataHigh, expose);
+Linescanner camHigh  (CLKLow, syncLow, dataLow, expose);
 
 // PID Controller
 LongitudinalPIDController conHigh;
@@ -78,6 +83,7 @@ void getline(Linescanner & cam) {
 /* --------------------------------- COMMAND DEFINITIONS --------------------------------- */
 void LongPID() {
 
+<<<<<<< HEAD
   float error;
   byte _status = camHigh.checkLongCases(debug);
   
@@ -97,6 +103,24 @@ void LongPID() {
   } else {
     _speed = maxSpeed;
   }
+=======
+//  float error;
+//  byte _status = camHigh.checkLongCases(debug);
+//  
+//  if ( _status == 0) {
+//    error = 15;
+//  } else if (_status == 1) {
+//    error = 5;
+//  } else {
+//    error = camHigh.calcError();
+//  }
+//  
+//  if (error > 10) {
+//    _speed = 26;
+//  } else {
+//    _speed = 51;
+//  }
+>>>>>>> better
   
   analogWrite(MOTOR_PIN, _speed);
 }
@@ -113,6 +137,11 @@ void LatPID() {
   }
 
   servo.write(angle);
+  if (error > 10) {
+    _speed = minSpeed;
+  } else {
+    _speed = maxSpeed;
+  }
 }
 
 /* --------------------------------- BEGIN COMMAND LIST ---------------------------------- */
@@ -239,6 +268,7 @@ bool doSerialCmd( byte cmdl ) {
       break;
       
     case ('x'):
+<<<<<<< HEAD
       minSpeed++;
       BTSerial.print("minSpeed = ");
       BTSerial.println(minSpeed);
@@ -261,6 +291,26 @@ bool doSerialCmd( byte cmdl ) {
       maxSpeed--;
       BTSerial.print("maxSpeed = ");
       BTSerial.println(maxSpeed);
+=======
+      BTSerial.print("maxSpeed = ");
+      BTSerial.println(++maxSpeed);
+      cmd.printNewCmdLn();
+      break;
+    case ('z'):
+      BTSerial.print("maxSpeed = ");
+      BTSerial.println(--maxSpeed);
+      cmd.printNewCmdLn();
+      break;
+
+    case ('u'):
+      BTSerial.print("minSpeed = ");
+      BTSerial.println(++minSpeed);
+      cmd.printNewCmdLn();
+      break;
+    case ('y'):
+      BTSerial.print("minSpeed = ");
+      BTSerial.println(--minSpeed);
+>>>>>>> better
       cmd.printNewCmdLn();
       break;
 

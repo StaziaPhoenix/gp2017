@@ -16,8 +16,8 @@ class LateralPIDController {
     float getD() const;
     
   private:
-    float kP  = 0.6; // inverse 0.6
-    float kD  = 2.0; // inverse 3
+    float kP  = 0.6; 
+    float kD  = 1.1;
     float kI  = 0;
     
     float prev_err = 0;
