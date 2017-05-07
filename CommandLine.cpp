@@ -11,7 +11,7 @@ void CommandLine::printCmdList() {
 
   //motor
   BTSerial.print("   Motor Config:\r\n");
-  BTSerial.print("      <o>    PWM 255 (100%)\r\n");
+//  BTSerial.print("      <o>    PWM 255 (100%)\r\n");
   BTSerial.print("      <9>    PWM 230  (90%)\r\n");
   BTSerial.print("      <8>    PWM 204  (80%)\r\n");
   BTSerial.print("      <7>    PWM 179  (70%)\r\n");
@@ -30,8 +30,11 @@ void CommandLine::printCmdList() {
   BTSerial.print("      <m>    Inc d by 10%\r\n");
   BTSerial.print("      <n>    Dec d by 10%\r\n");
 
-  BTSerial.print("      <x>    Inc speed by 1 tick\r\n");
-  BTSerial.print("      <z>    Dec speed by 1 tick\r\n");
+  BTSerial.print("      <x>    Set minSpeed++\r\n");
+  BTSerial.print("      <z>    Set minSpeed--\r\n");
+
+  BTSerial.print("      <p>    Set maxSpeed++\r\n");
+  BTSerial.print("      <o>    Set maxSpeed--\r\n");
   
   // modes
   BTSerial.print("   Options:\r\n");

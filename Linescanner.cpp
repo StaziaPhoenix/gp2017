@@ -153,6 +153,21 @@ int Linescanner::findLeftEdge(int startIdx) {
   //BTSerial.println("Could not find left edge");
   return NOLINE;
 }
+//
+//void Linescanner::findEdges() {
+//  for (int i = 0; i < numPixels-4; i++) {
+//    if (digital[i] == 0 && digital[i+1] && digital[i+2] == 1 &&
+//        digital[i+3] == 1) {
+//      leftIdx = i+1;
+//      for (int j = i+4; j < numPixels-4; j++) {
+//        if (digital[j] == 0) {
+//          holeCount++;
+//        }
+//      }
+//    }
+//  }
+//  leftIdx = NOLINE;
+//}
 
 
 /* ---------------------------------
@@ -174,8 +189,11 @@ bool Linescanner::checkLatCases(byte angle, Servo & servo, byte debug) {
   leftIdx = findLeftEdge(0);
   rightIdx = findRightEdge(NUM_PIXELS-1);
 
+//    findEdges();
+  
   // lost sight of the line, stay turning in previous direction
   if (leftIdx == NOLINE || (rightIdx-leftIdx) > 80) {
+    // if (leftIdx == NOLINE || holeCount > 3) {
     if (angle > 90) {
       servo.write(LEFT);
       if (debug) {
@@ -190,13 +208,13 @@ bool Linescanner::checkLatCases(byte angle, Servo & servo, byte debug) {
     return true;
   }
 
-  // intersection, stay true
-  if ( (rightIdx-leftIdx) > (lineWidth+10) ) {
-    if (debug) {
-      BTSerial.println("Intersection");
-    }
-    return true;
-  }
+//  // intersection, stay true
+//  if ( (rightIdx-leftIdx) > (lineWidth+10) ) {
+//    if (debug) {
+//      BTSerial.println("Intersection");
+//    }
+//    return true;
+//  }
   
   // if none of these, adjust according to PID
   return false;

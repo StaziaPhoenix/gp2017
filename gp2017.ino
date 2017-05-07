@@ -15,6 +15,8 @@ byte motorOn  = 0;
 byte servoOn  = 0; 
 byte lineWidth;
 byte _speed   = 0;
+byte minSpeed = 26;
+byte maxSpeed = 51;
 
 Servo servo;
 byte angle  = CENTER;
@@ -88,9 +90,12 @@ void LongPID() {
   }
   
   if (error > 10) {
-    _speed = 26;
+    if (_speed > 25) {
+      _speed = 0;
+    }
+    _speed = minSpeed;
   } else {
-    _speed = 51;
+    _speed = maxSpeed;
   }
   
   analogWrite(MOTOR_PIN, _speed);
@@ -194,12 +199,12 @@ bool doSerialCmd( byte cmdl ) {
       BTSerial.print("MOTOR AT ");
       BTSerial.println(_speed);
       break;      
-    case ('o'):
-      _speed = 255;
-      cmd.printNewCmdLn();
-      BTSerial.print("MOTOR AT ");
-      BTSerial.println(_speed);
-      break;      
+//    case ('o'):
+//      _speed = 255;
+//      cmd.printNewCmdLn();
+//      BTSerial.print("MOTOR AT ");
+//      BTSerial.println(_speed);
+//      break;      
     case ('0'):
       _speed = 0;
       cmd.printNewCmdLn();
@@ -234,10 +239,28 @@ bool doSerialCmd( byte cmdl ) {
       break;
       
     case ('x'):
-      BTSerial.println(NOT_YET_STR);
+      minSpeed++;
+      BTSerial.print("minSpeed = ");
+      BTSerial.println(minSpeed);
       cmd.printNewCmdLn();
+      break;
     case ('z'):
-      BTSerial.println(NOT_YET_STR);
+      minSpeed--;
+      BTSerial.print("minSpeed = ");
+      BTSerial.println(minSpeed);
+      cmd.printNewCmdLn();
+      break;
+
+    case ('p'):
+      maxSpeed++;
+      BTSerial.print("maxSpeed = ");
+      BTSerial.println(maxSpeed);
+      cmd.printNewCmdLn();
+      break;
+    case ('o'):
+      maxSpeed--;
+      BTSerial.print("maxSpeed = ");
+      BTSerial.println(maxSpeed);
       cmd.printNewCmdLn();
       break;
 
@@ -305,18 +328,18 @@ void loop() {
 void run() {
   camLow.setLineWidth();
   while(!doSerialCmd(cmd.getSerialCmd())) {      
-      if (servoOn)
+      if (servoOn && !motorOn)
         LatPID();
-
-      if (motorOn) {
-        LongPID();
-      }
-  
-      if (!motorOn && !servoOn) {
+      else if (!servoOn && motorOn) {
+        analogWrite(MOTOR_PIN, _speed);
+      } else if (!motorOn && !servoOn) {
         camHigh.getline();
         camLow.getline();
         camHigh.printDigital();
         camLow.printDigital();
+      } else { // true run - both on
+        LatPID();
+        LongPID();
       }
     }
   }

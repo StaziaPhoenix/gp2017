@@ -16,13 +16,13 @@ class LateralPIDController {
     float getD() const;
     
   private:
-    float kP  = 1.15; 
-    float kD  = 0.8;
+    float kP  = 0.6; // inverse 0.6
+    float kD  = 2.0; // inverse 3
     float kI  = 0;
     
     float prev_err = 0;
     float i = 0;
-    const byte outMax = 68;
+    const byte outMax = 80;
     float threshold = 1.10;
     byte go = 0;
 
