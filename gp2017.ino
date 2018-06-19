@@ -15,13 +15,12 @@ byte motorOn  = 0;
 byte servoOn  = 0; 
 byte lineWidth;
 byte _speed   = 0;
-<<<<<<< HEAD
+
 byte minSpeed = 26;
 byte maxSpeed = 51;
-=======
-byte maxSpeed = 35;
-byte minSpeed = 24;
->>>>>>> better
+
+//byte maxSpeed = 35;
+//byte minSpeed = 24;
 
 Servo servo;
 byte angle  = CENTER;
